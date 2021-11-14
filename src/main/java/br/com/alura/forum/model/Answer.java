@@ -1,13 +1,18 @@
 package br.com.alura.forum.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Answer {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String message;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Topic topic;
 	private LocalDateTime createdAt = LocalDateTime.now();
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User author;
 	private Boolean isSolution = false;
 

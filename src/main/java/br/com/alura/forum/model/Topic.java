@@ -1,18 +1,25 @@
 package br.com.alura.forum.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Topic {
 
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String title;
 	private String message;
 	private LocalDateTime createdAt = LocalDateTime.now();
+	@Enumerated(EnumType.STRING)
 	private TopicStatus status = TopicStatus.UNANSWERED;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User author;
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Course course;
+	@OneToMany(mappedBy = "topic")
 	private List<Answer> answers = new ArrayList<>();
 
 	public Topic(String title, String message, Course course) {
@@ -20,6 +27,8 @@ public class Topic {
 		this.message = message;
 		this.course = course;
 	}
+
+	public Topic() {}
 
 	@Override
 	public int hashCode() {
