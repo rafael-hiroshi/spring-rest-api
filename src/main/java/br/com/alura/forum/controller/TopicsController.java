@@ -8,6 +8,8 @@ import br.com.alura.forum.model.Topic;
 import br.com.alura.forum.repository.CourseRepository;
 import br.com.alura.forum.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +35,7 @@ public class TopicsController {
     private CourseRepository courseRepository;
 
     @GetMapping
+    @Cacheable(value = "listOfTopics")
     public Page<TopicDto> list(@RequestParam(required = false) String courseName, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (courseName == null) {
             return TopicDto.convert(topicRepository.findAll(pageable));
@@ -43,6 +46,7 @@ public class TopicsController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "listOfTopics", allEntries = true)
     public ResponseEntity<TopicDto> store(@RequestBody @Valid TopicForm form, UriComponentsBuilder builder) {
         Topic topic = form.toTopic(courseRepository);
         topicRepository.save(topic);
@@ -62,6 +66,7 @@ public class TopicsController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listOfTopics", allEntries = true)
     public ResponseEntity<TopicDetailsDto> update(@PathVariable Long id, @RequestBody @Valid UpdateTopicForm form) {
         Optional<Topic> optional = topicRepository.findById(id);
         if (optional.isPresent()) {
@@ -74,6 +79,7 @@ public class TopicsController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listOfTopics", allEntries = true)
     public ResponseEntity<?> destroy(@PathVariable Long id) {
         Optional<Topic> optional = topicRepository.findById(id);
         if (optional.isPresent()) {
