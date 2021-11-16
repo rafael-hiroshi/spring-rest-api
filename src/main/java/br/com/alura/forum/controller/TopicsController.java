@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,19 +33,12 @@ public class TopicsController {
     private CourseRepository courseRepository;
 
     @GetMapping
-    public Page<TopicDto> list(@RequestParam(required = false) String courseName, @RequestParam int page,
-                               @RequestParam int quantity, @RequestParam String order) {
-
-        Pageable pageable = PageRequest.of(page, quantity, Sort.Direction.DESC, order);
-
-        Page<Topic> topics;
+    public Page<TopicDto> list(@RequestParam(required = false) String courseName, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         if (courseName == null) {
-            topics = topicRepository.findAll(pageable);
-        } else {
-            topics = topicRepository.findByCourseName(courseName, pageable);
+            return TopicDto.convert(topicRepository.findAll(pageable));
         }
 
-        return TopicDto.convert(topics);
+        return TopicDto.convert(topicRepository.findByCourseName(courseName, pageable));
     }
 
     @PostMapping
