@@ -2,12 +2,11 @@ package br.com.alura.forum.controller;
 
 import br.com.alura.forum.dto.TopicDetailsDto;
 import br.com.alura.forum.dto.TopicDto;
-import br.com.alura.forum.dto.TopicForm;
-import br.com.alura.forum.dto.UpdateTopicForm;
+import br.com.alura.forum.form.TopicForm;
+import br.com.alura.forum.form.UpdateTopicForm;
 import br.com.alura.forum.model.Topic;
 import br.com.alura.forum.repository.CourseRepository;
 import br.com.alura.forum.repository.TopicRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

@@ -1,7 +1,7 @@
 package br.com.alura.forum.controller;
 
 import br.com.alura.forum.config.security.TokenService;
-import br.com.alura.forum.dto.LoginForm;
+import br.com.alura.forum.form.LoginForm;
 import br.com.alura.forum.dto.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
