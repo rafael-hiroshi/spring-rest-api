@@ -1,0 +1,17 @@
+version: '3'
+services:
+  spring:
+    build:
+      dockerfile: './Dockerfile'
+      context: './'
+    environment:
+      DB_URL: jdbc:mysql://${DB_HOST}:3306/${DB_DATABASE}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    container_name: spring_boot
+    ports:
+      - '8080:8080'
+    network_mode: 'host'
